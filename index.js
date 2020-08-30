@@ -125,13 +125,22 @@ app.get('/out/:locid', (req, res) => {
         if (result) { return res.send(true) }
       })
     }
+    else{
+      res.send('please try again later')
+    }
   })
 
 })
 app.get('/find/:que',(req,res)=>{
   var quer=req.params.que
-    cureent.find({ $text: { $search:quer, $caseSensitive: false}}).then((result,err)=>{
+    cureent.find({$and:[{ $text: { $search:quer, $caseSensitive: false}},{isparked:true}]}).then((result,err)=>{
       console.log(err,result)
+      res.send(result)
+    })
+})
+app.get('/lists',(req,res)=>{
+    cureent.find().then((result,err)=>{
+      // console.log(err,result)
       res.send(result)
     })
 })
